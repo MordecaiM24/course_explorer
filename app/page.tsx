@@ -1,5 +1,10 @@
 import Image from "next/image";
 import { ModeToggle } from "./components/ModeToggle";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 
 export default function Home() {
   return (
@@ -7,9 +12,12 @@ export default function Home() {
       <div className="flex min-w-full flex-col items-start justify-between gap-y-4">
         <p>Welcome to the course explorer</p>
         <p> This is what a course will look like </p>
-        <div className="rounded-md bg-gray-200 px-8 py-4 text-black">
-          CSC 116
-        </div>
+        <Popover>
+          <PopoverTrigger className="rounded-md bg-gray-800 px-10 py-4 text-white dark:bg-gray-200 dark:text-black">
+            CSC 116
+          </PopoverTrigger>
+          <PopoverContent>Some content</PopoverContent>
+        </Popover>
       </div>
 
       <footer className="flex flex-col flex-wrap items-start justify-center gap-2 text-sm">
