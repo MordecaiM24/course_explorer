@@ -1,7 +1,6 @@
 // CourseExplorer.jsx
 import { Suspense } from "react";
 import CourseNode from "./CourseNode";
-import { ErrorBoundary } from "next/dist/client/components/error-boundary";
 
 // This data would eventually come from your database
 const MOCK_COURSE_INFO = {
