@@ -38,7 +38,6 @@ const CourseNode: React.FC<CourseNodeProps> = ({
   const [courseInfo, setCourseInfo] = useState<Course | null>(
     initialCourseInfo || null,
   );
-  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     if (!courseInfo) {
@@ -47,14 +46,16 @@ const CourseNode: React.FC<CourseNodeProps> = ({
         .then((data) => setCourseInfo(data))
         .catch(console.error);
     }
+  }, [courseCode, courseInfo]);
 
+  useEffect(() => {
     if (dependencies.length === 0) {
       fetch(`/api/course/${courseCode}/dependencies`)
         .then((res) => res.json())
         .then((data) => setDependencies(data))
         .catch(console.error);
     }
-  }, [courseCode, courseInfo]);
+  }, [courseCode, dependencies]);
 
   useEffect(() => {
     const checkStatus = () => {
@@ -81,7 +82,6 @@ const CourseNode: React.FC<CourseNodeProps> = ({
   const handleExpand = async (e: React.MouseEvent) => {
     e.preventDefault(); // Prevent Link navigation
     if (!isExpanded && dependencies.length === 0) {
-      setIsLoading(true);
       try {
         const res = await fetch(`/api/course/${courseCode}/dependencies`);
         const deps = await res.json();
@@ -89,7 +89,6 @@ const CourseNode: React.FC<CourseNodeProps> = ({
       } catch (error) {
         console.error("Error fetching dependencies:", error);
       }
-      setIsLoading(false);
     }
     setIsExpanded(!isExpanded);
   };

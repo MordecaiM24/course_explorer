@@ -23,7 +23,6 @@ import {
 } from "@/components/ui/pagination";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import Link from "next/link";
-import { Course } from "@/types/courses";
 
 interface CourseBasicInfo {
   code: string;

@@ -18,6 +18,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import Link from "next/link";
+import { Course } from "@/types/courses";
 
 // Utility functions for storage management
 const getStoredCourses = (key: string) => {
@@ -45,14 +46,16 @@ export const CourseList = ({ type }: { type: string }) => {
     return () => window.removeEventListener("storage", loadCourses);
   }, [storageKey]);
 
-  const handleRemove = (courseCode: any) => {
-    const updated = courses.filter((course: any) => course.code !== courseCode);
+  const handleRemove = (courseCode: string) => {
+    const updated = courses.filter(
+      (course: Course) => course.code !== courseCode,
+    );
     localStorage.setItem(storageKey, JSON.stringify(updated));
     setCourses(updated);
   };
 
-  const filterCourses = (courses: any) => {
-    return courses.filter((course: any) => {
+  const filterCourses = (courses: Course[]) => {
+    return courses.filter((course: Course) => {
       const matchesSearch =
         !searchQuery ||
         course.code.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -68,8 +71,8 @@ export const CourseList = ({ type }: { type: string }) => {
 
   const displayedCourses = filterCourses(courses);
   const uniqueHours = [
-    ...new Set(courses.map((course: any) => course.hours)),
-  ].sort((a, b) => a - b);
+    ...new Set(courses.map((course: Course) => course.hours)),
+  ].sort((a, b) => parseInt(a) - parseInt(b));
 
   return (
     <div className="mx-auto max-w-4xl p-4">
@@ -119,7 +122,7 @@ export const CourseList = ({ type }: { type: string }) => {
                     <SelectItem value="all">All Credit Hours</SelectItem>
                     {uniqueHours.map((hours) => (
                       <SelectItem key={hours} value={hours.toString()}>
-                        {hours} {hours === 1 ? "Hours" : "Hours"}
+                        {hours} {hours === "1" ? "Hours" : "Hours"}
                       </SelectItem>
                     ))}
                   </SelectContent>
@@ -136,14 +139,14 @@ export const CourseList = ({ type }: { type: string }) => {
             </div>
           ) : (
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-              {displayedCourses.map((course: any) => (
+              {displayedCourses.map((course: Course) => (
                 <Link href={`/${course.code}`} key={course.code}>
                   <Card>
                     <CardContent className="pt-6">
                       <div className="mb-2 flex items-start justify-between">
                         <div>
                           <h3 className="text-lg font-medium">{course.code}</h3>
-                          <h4 className="mb-1 text-gray-600">{course.title}</h4>
+                          <h4 className="mb-1 text-gray-600">{course.name}</h4>
                         </div>
                         <Popover>
                           <PopoverTrigger asChild>
@@ -179,7 +182,8 @@ export const CourseList = ({ type }: { type: string }) => {
                         {course.description}
                       </p>
                       <div className="text-sm text-gray-500">
-                        {course.hours} {course.hours === 1 ? "hours" : "hours"}
+                        {course.hours}{" "}
+                        {course.hours === "1" ? "hours" : "hours"}
                       </div>
                     </CardContent>
                   </Card>

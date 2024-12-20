@@ -1,6 +1,5 @@
 // app/page.tsx
 import { Suspense } from "react";
-import { Course } from "@/types/courses";
 import CourseSearchClient from "./components/ClientSearch";
 
 // We'll load basic course info first (enough for search/filter)
