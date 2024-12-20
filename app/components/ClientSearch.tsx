@@ -25,13 +25,20 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import Link from "next/link";
 import { Course } from "@/types/courses";
 
+interface CourseBasicInfo {
+  code: string;
+  name: string;
+  department: string;
+  hours: string;
+}
+
 interface Department {
   id: string;
   name: string;
 }
 
 interface CourseSearchClientProps {
-  initialCourses: Course[];
+  initialCourses: CourseBasicInfo[];
   departments: Department[];
 }
 
@@ -50,7 +57,7 @@ export default function CourseSearchClient({
   // Reset page when filters change
   const resetPage = () => setCurrentPage(1);
 
-  // Memoize filtered courses to prevent unnecessary recalculations
+  // Memoize filtered courses based on the smaller dataset
   const filteredCourses = useMemo(() => {
     return initialCourses.filter((course) => {
       const matchesSearch =
@@ -205,23 +212,18 @@ export default function CourseSearchClient({
                   className="block hover:no-underline"
                 >
                   <Card className="h-full cursor-pointer transition-shadow hover:shadow-md">
-                    <CardContent className="pt-6">
-                      <div>
-                        <div className="mb-2 flex items-start justify-between">
-                          <div>
-                            <h3 className="text-lg font-medium text-foreground">
-                              {course.code}
-                            </h3>
-                            <h4 className="text-gray-600">{course.name}</h4>
-                          </div>
+                    <CardContent className="h-full pt-6">
+                      <div className="mb-2 flex flex-col items-start justify-between gap-y-2">
+                        <div className="flex w-full flex-row items-center justify-between">
+                          <h3 className="text-lg font-medium text-foreground">
+                            {course.code}
+                          </h3>
                           <span className="text-sm text-gray-500">
-                            {course.hours}{" "}
-                            {parseInt(course.hours) === 1 ? "hour" : "hours"}
+                            {course.hours}
+                            {parseInt(course.hours) === 1 ? " hour" : " hours"}
                           </span>
                         </div>
-                        <p className="line-clamp-2 text-sm text-gray-600">
-                          {course.description}
-                        </p>
+                        <h4 className="text-gray-600">{course.name}</h4>
                       </div>
                     </CardContent>
                   </Card>

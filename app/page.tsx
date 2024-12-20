@@ -2,11 +2,18 @@
 import { Suspense } from "react";
 import { Course } from "@/types/courses";
 import CourseSearchClient from "./components/ClientSearch";
-import { DEPARTMENTS } from "./data/departments";
 
-async function getCourses(): Promise<Course[]> {
-  const res = await fetch(`${process.env.API_URL}/courses`, {
-    cache: "force-cache", // This enables caching
+// We'll load basic course info first (enough for search/filter)
+interface CourseBasicInfo {
+  code: string;
+  name: string;
+  department: string;
+  hours: string;
+}
+
+async function getCoursesBasicInfo(): Promise<CourseBasicInfo[]> {
+  const res = await fetch(`${process.env.API_URL}/courses/basic`, {
+    cache: "force-cache",
     headers: {
       "Content-Type": "application/json",
     },
@@ -20,20 +27,23 @@ async function getCourses(): Promise<Course[]> {
 }
 
 export default async function CoursePage() {
-  const courses = await getCourses();
+  const courses = await getCoursesBasicInfo();
+
+  const departments = [...new Set(courses.map((course) => course.department))]
+    .sort()
+    .map((id) => ({ id, name: id }));
 
   return (
     <div className="mx-auto max-w-6xl p-4">
       <Suspense fallback={<CourseSearchSkeleton />}>
         <CourseSearchClient
           initialCourses={courses}
-          departments={DEPARTMENTS}
+          departments={departments}
         />
       </Suspense>
     </div>
   );
 }
-
 // Skeleton loader component
 function CourseSearchSkeleton() {
   return (
