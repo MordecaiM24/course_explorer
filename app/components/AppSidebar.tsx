@@ -13,42 +13,28 @@ import {
 } from "@/components/ui/sidebar";
 import {
   AudioWaveform,
-  Calendar,
-  Command,
   GalleryVerticalEnd,
   Home,
-  Inbox,
-  Search,
-  Settings,
+  Bookmark,
+  CheckCircle,
 } from "lucide-react";
 import { SchoolSwitcher } from "./SchoolSwitcher";
-import { QuerySelector } from "./QuerySelector";
 
 const items = [
   {
     title: "Home",
-    url: "#",
+    url: "/",
     icon: Home,
   },
   {
-    title: "Inbox",
-    url: "#",
-    icon: Inbox,
+    title: "Bookmarks",
+    url: "/bookmarks",
+    icon: Bookmark,
   },
   {
-    title: "Calendar",
-    url: "#",
-    icon: Calendar,
-  },
-  {
-    title: "Search",
-    url: "#",
-    icon: Search,
-  },
-  {
-    title: "Settings",
-    url: "#",
-    icon: Settings,
+    title: "Saved",
+    url: "/saved",
+    icon: CheckCircle,
   },
 ];
 
@@ -56,12 +42,12 @@ const schools = [
   {
     name: "NCSU",
     logo: GalleryVerticalEnd,
-    plan: "Enterprise",
+    plan: "",
   },
   {
     name: "UNC",
     logo: AudioWaveform,
-    plan: "Startup",
+    plan: "",
   },
 ];
 
@@ -86,9 +72,6 @@ export function AppSidebar() {
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}
-              <SidebarMenuItem>
-                <QuerySelector category="department" />
-              </SidebarMenuItem>
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>

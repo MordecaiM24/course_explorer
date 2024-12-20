@@ -16,32 +16,21 @@ import {
 } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
 import { Check, ChevronsUpDown } from "lucide-react";
-import React, { useState } from "react";
+import React, { Dispatch, SetStateAction, useState } from "react";
+import { departments } from "../data/departments.js";
 
-const departments = [
-  {
-    label: "E",
-    value: "Engineering",
-  },
-  {
-    label: "MA",
-    value: "Mathematics",
-  },
-  {
-    label: "CSC",
-    value: "Computer Science",
-  },
-  {
-    label: "PY",
-    value: "Physics",
-  },
-  {
-    label: "CH",
-    value: "Chemistry",
-  },
+const courses = [
+  { label: "CS101", value: "CS101" },
+  { label: "MATH101", value: "MATH101" },
+  { label: "ALG101", value: "ALG101" },
+  { label: "MATH100", value: "MATH100" },
 ];
 
-export function QuerySelector({ category }: { category: String }) {
+export function CourseSelector({
+  setCourse,
+}: {
+  setCourse: Dispatch<SetStateAction<string>>;
+}) {
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState("");
 
@@ -51,38 +40,40 @@ export function QuerySelector({ category }: { category: String }) {
         <Button
           variant="outline"
           role="combobox"
-          aria-expanded={open}
-          className="w-[200px] justify-between"
+          aria-expanded={false}
+          className="relative w-[200px] justify-between"
         >
-          {value
-            ? departments.find((department) => department.value === value)
-                ?.value
-            : `Select ${category}...`}
-          <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+          <p className="block w-36 overflow-hidden whitespace-nowrap text-start">
+            {value
+              ? courses.find((course) => course.value === value)?.value
+              : `Select class...`}
+          </p>
+          <ChevronsUpDown className="absolute right-4 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-[200px] p-0">
         <Command>
-          <CommandInput placeholder="Search department..." />
+          <CommandInput placeholder="Search classes..." />
           <CommandList>
             <CommandEmpty>No departments found</CommandEmpty>
             <CommandGroup>
-              {departments.map((department) => (
+              {courses.map((course) => (
                 <CommandItem
-                  key={department.value}
-                  value={department.value}
+                  key={course.value}
+                  value={course.value}
                   onSelect={(currentValue) => {
-                    setValue(currentValue === value ? "" : currentValue);
                     setOpen(false);
+                    setValue(currentValue === value ? "" : currentValue);
+                    setCourse(currentValue);
                   }}
                 >
                   <Check
                     className={cn(
                       "mr-2 h-4 w-4",
-                      value === department.value ? "opacity-100" : "opacity-0",
+                      value === course.value ? "opacity-100" : "opacity-0",
                     )}
                   />
-                  {department.value}
+                  {course.value}
                 </CommandItem>
               ))}
             </CommandGroup>

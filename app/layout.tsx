@@ -4,6 +4,8 @@ import "./globals.css";
 import { ThemeProvider } from "./components/ThemeProvider";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "./components/AppSidebar";
+import Image from "next/image";
+import { ModeToggle } from "./components/ModeToggle";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -29,7 +31,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gray-1100 bg-[url('/grid.svg')]`}
+        className={`${geistSans.variable} ${geistMono.variable} bg-gray-1100 bg-[url('/grid.svg')] antialiased`}
       >
         <ThemeProvider
           attribute="class"
@@ -39,9 +41,30 @@ export default function RootLayout({
         >
           <SidebarProvider>
             <AppSidebar />
-            <main>
+            <main className="w-full">
               <SidebarTrigger />
               {children}
+              <footer className="fixed bottom-4 left-12 flex flex-col flex-wrap items-start justify-center gap-2 text-sm sm:left-80">
+                <p>Made by Mordecai Mengesteab</p>
+                <a
+                  className="flex items-center gap-2 hover:underline hover:underline-offset-4"
+                  href="https://m16b.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <Image
+                    aria-hidden
+                    src="https://nextjs.org/icons/window.svg"
+                    alt="Window icon"
+                    width={16}
+                    height={16}
+                  />
+                  See more stuff!
+                </a>
+              </footer>
+              <div className="fixed bottom-6 right-12">
+                <ModeToggle />
+              </div>
             </main>
           </SidebarProvider>
         </ThemeProvider>
