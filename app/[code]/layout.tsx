@@ -5,7 +5,5 @@ export default function Layout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return (
-    <div className="bg-[url('/grid.svg') min-h-full min-w-full">{children}</div>
-  );
+  return <div className="min-h-full min-w-full">{children}</div>;
 }
