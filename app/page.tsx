@@ -1,6 +1,7 @@
 // app/page.tsx
 import { Suspense } from "react";
 import CourseSearchClient from "./components/ClientSearch";
+import { DEPARTMENTS as departments } from "./data/departments";
 
 // We'll load basic course info first (enough for search/filter)
 interface CourseBasicInfo {
@@ -27,10 +28,6 @@ async function getCoursesBasicInfo(): Promise<CourseBasicInfo[]> {
 
 export default async function CoursePage() {
   const courses = await getCoursesBasicInfo();
-
-  const departments = [...new Set(courses.map((course) => course.department))]
-    .sort()
-    .map((id) => ({ id, name: id }));
 
   return (
     <div className="mx-auto max-w-6xl p-4">
