@@ -47,7 +47,7 @@ const schools = [
   {
     name: "UNC",
     logo: AudioWaveform,
-    plan: "",
+    plan: "Coming soon!",
   },
 ];
 
